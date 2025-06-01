@@ -1,0 +1,136 @@
+/* Base Styles */
+body {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  background-color: #fff7fa;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  transition: background 0.3s, color 0.3s;
+}
+
+.container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffeff8;
+  border-radius: 1.5rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+  text-align: center;
+  color: #d36b8b;
+}
+
+.controls {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+input[type="text"], select {
+  padding: 0.6rem;
+  border-radius: 0.8rem;
+  border: 1px solid #ccc;
+  flex-grow: 1;
+  font-size: 1rem;
+}
+
+button {
+  padding: 0.6rem 1rem;
+  background-color: #f9a8d4;
+  color: white;
+  border: none;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #ec4899;
+}
+
+ul#taskList {
+  list-style: none;
+  padding: 0;
+}
+
+ul#taskList li {
+  background-color: #fff0f6;
+  margin: 0.5rem 0;
+  padding: 0.8rem;
+  border-radius: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  cursor: grab;
+  transition: transform 0.2s ease;
+}
+
+ul#taskList li:active {
+  transform: scale(1.02);
+}
+
+.success-popup, .streak-popup {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ffcdf2;
+  color: #111;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  font-size: 1rem;
+  z-index: 999;
+  animation: fade-in 0.5s ease;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+/* Dark Mode */
+body.dark {
+  background-color: #1e1e1e;
+  color: #f3f3f3;
+}
+
+body.dark .container {
+  background-color: #2a2a2a;
+  color: #fff;
+}
+
+body.dark input, body.dark select {
+  background-color: #444;
+  color: #f3f3f3;
+  border: 1px solid #888;
+}
+
+body.dark ul#taskList li {
+  background-color: #333;
+  color: #f3f3f3;
+}
+
+body.dark button {
+  background-color: #a855f7;
+}
+
+body.dark button:hover {
+  background-color: #9333ea;
+}
+
+body.dark .success-popup,
+body.dark .streak-popup {
+  background-color: #c084fc;
+  color: #fff;
+}

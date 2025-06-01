@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to Your To-Do List</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    body {
+      background: url('images/yaroslav-zakharchenko-vqy5GGbmrV4-unsplash.jpg') no-repeat center center/cover;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .input-container {
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      color: #fff;
+    }
+
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 15px;
+      line-height: 1.3;
+    }
+
+    .intro-text {
+      margin-bottom: 20px;
+      font-size: 1em;
+    }
+
+    input[type="text"] {
+      padding: 12px 15px;
+      width: 100%;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      border: none;
+      font-size: 1em;
+      outline: none;
+    }
+
+    button {
+      padding: 12px 25px;
+      background-color: #ffb6c1;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #ff69b4;
+      color: white;
+    }
+
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 1.7em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="input-container">
+    <h1>Welcome to Your <br> 🌸 To-Do List 🌸</h1>
+    <p class="intro-text">Hi there! Ready to organize your day and get things done?</p>
+    <p class="intro-text">Enter your name to get started and we’ll personalize the app just for you!</p>
+    <form id="nameForm">
+      <input type="text" id="userNameInput" placeholder="Enter your name" required />
+      <button type="submit">Let's Go!</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('nameForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const userName = document.getElementById('userNameInput').value.trim();
+      if (userName) {
+        localStorage.setItem('userName', userName);
+        window.location.href = 'todo.html';
+      }
+    });
+  </script>
+</body>
+</html>

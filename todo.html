@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My To-Do List</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff9f5;
+      color: #333;
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ff69b4;
+    }
+
+    form {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-right: 0.5rem;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      background-color: #ffb6c1;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #ff69b4;
+      color: white;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li.task-item {
+      background: #ffeef0;
+      margin-bottom: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    li.completed span {
+      text-decoration: line-through;
+      color: #999;
+    }
+
+    body.dark-mode li.task-item {
+      background-color: #2b2b2b;
+    }
+
+    body.dark-mode input[type="text"] {
+      background-color: #333;
+      color: #f0f0f0;
+      border: 1px solid #555;
+    }
+
+    body.dark-mode button {
+      background-color: #ff69b4;
+      color: white;
+    }
+
+    body.dark-mode button:hover {
+      background-color: #ff85c1;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌸 My To-Do List</h1>
+
+  <div style="text-align:right; margin-bottom: 1rem;">
+    <button id="toggle-dark-mode">Toggle Dark Mode</button>
+  </div>
+
+  <form id="task-form">
+    <input type="text" id="task-input" placeholder="Add a task..." />
+    <button type="submit">Add</button>
+  </form>
+
+  <ul id="task-list"></ul>
+
+  <div style="text-align:center; margin-top:2rem;">
+    <a href="summary.html">
+      <button>View Summary</button>
+    </a>
+  </div>
+
+  <script src="todo.js"></script>
+</body>
+</html>
