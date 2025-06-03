@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <title>Summary</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
     :root {
@@ -25,8 +25,8 @@
       color: var(--text-light);
       text-align: center;
       padding: 2rem;
-      transition: background-color 0.3s, color 0.3s;
       margin: 0;
+      transition: background-color 0.3s, color 0.3s;
     }
 
     body.dark-mode {
@@ -37,7 +37,7 @@
     h1 {
       color: var(--accent);
       font-size: 2rem;
-      margin: 1rem 0;
+      margin-top: 3.5rem;
     }
 
     .summary-box {
@@ -45,7 +45,6 @@
       border-radius: 12px;
       padding: 1.5rem;
       margin: 2rem auto;
-      width: 100%;
       max-width: 400px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
       transition: background-color 0.3s;
@@ -53,6 +52,54 @@
 
     body.dark-mode .summary-box {
       background: var(--bg-box-dark);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+    }
+
+    #calendar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 90%;
+      margin: 2rem auto;
+      gap: 0.5rem;
+    }
+
+    .day-box {
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      background-color: #f5f5f5;
+      color: #666;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .day-box.completed {
+      background-color: #b5e6b5;
+      color: #2f6627;
+    }
+
+    .day-box.missed {
+      background-color: #f9c2c2;
+      color: #8b0000;
+    }
+
+    body.dark-mode .day-box {
+      background-color: #333;
+      color: #aaa;
+    }
+
+    body.dark-mode .day-box.completed {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    body.dark-mode .day-box.missed {
+      background-color: #cc4444;
+      color: white;
     }
 
     button {
@@ -75,126 +122,265 @@
       position: fixed;
       top: 1rem;
       left: 1rem;
-      background: none;
+      background: transparent;
       border: none;
-      font-size: 1.3rem;
-      padding: 1.5rem;
-      z-index:1000;
+      font-size: 1.5rem;
       cursor: pointer;
+      z-index: 1000;
     }
 
-    #calendar {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      max-width: 90%;
+    canvas {
+      max-width: 600px;
       margin: 2rem auto;
-      gap: 0.5rem;
     }
+    .goal-section {
+  text-align: center;
+  margin: 30px 0;
+}
 
-    .day-box {
-      width: 2rem;
-      height: 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-      border-radius: 6px;
-      background-color: #f5f5f5;
-      color: #666;
-    }
+.goal-ring-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+}
 
-    body.dark-mode .day-box {
-      background-color: #333;
-      color: #aaa;
-    }
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.progress-ring-bg {
+  fill: none;
+  stroke: #e6e6e6;
+  stroke-width: 12;
+}
+
+.progress-ring-fill {
+  fill: none;
+  stroke: #76c7c0;
+  stroke-width: 12;
+  stroke-linecap: round;
+  stroke-dasharray: 339.292;
+  stroke-dashoffset: 339.292;
+  transition: stroke-dashoffset 1s ease;
+}
+
+.goal-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
 
     @media (max-width: 600px) {
-     body{
-      padding: 1rem;
-     }
       h1 {
         font-size: 1.5rem;
-        
       }
 
-      button {
-        width: 100%;
-        font-size: 1rem;
+      .summary-box {
+        padding: 1rem;
       }
 
       .day-box {
         width: 2.2rem;
         height: 2.2rem;
+        font-size: 0.8rem;
+      }
+
+      button {
+        width: 100%;
       }
     }
+    .badge-display {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+
+.badge-display span {
+  background-color: #ffe4e1;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  display: inline-block;
+  font-weight: bold;
+  color: #d6336c;
+}
+
+body.dark-mode .badge-display span {
+  background-color: #3a3a3a;
+  color: #ffb6c1;
+}
+
   </style>
 </head>
 <body>
-  <button id="toggle-dark-mode"><span id="toggle-icon">🌙</span></button>
+
+  <button id="toggle-dark-mode" title="Toggle dark mode">🌙</button>
   <h1>🎉 Summary</h1>
 
   <div class="summary-box">
     <p><strong>Tasks Completed:</strong> <span id="completed-count">0</span></p>
     <p><strong>Streak:</strong> <span id="streak-count">0</span> days</p>
   </div>
+<div id="badge" class="badge-display"></div>
 
-  <canvas id="taskChart" width="300" height="200"></canvas>
+  <canvas id="progressChart" width="300" height="200"></canvas>
+
+  <div id="calendar"></div>
+  <div class="goal-section">
+  <h2>🎯 Daily Goal Progress</h2>
+  <div class="goal-ring-container">
+    <svg class="progress-ring" width="120" height="120">
+      <circle class="progress-ring-bg" cx="60" cy="60" r="54" />
+      <circle class="progress-ring-fill" cx="60" cy="60" r="54" />
+    </svg>
+    <div class="goal-text" id="goal-percent">0%</div>
+  </div>
+  <p>You’ve completed <span id="completed-today">0</span> / <span id="daily-goal">3</span> tasks today!</p>
+</div>
 
   <a href="todo.html">
     <button>🔙 Go Back to To-Do</button>
   </a>
-
+  
   <script>
-    document.getElementById('completed-count').textContent =
-      localStorage.getItem('totalCompleted') || '0';
-    const streakCount = parseInt(localStorage.getItem('streak') || '0');
-    document.getElementById('streak-count').textContent = streakCount;
+    const completed = parseInt(localStorage.getItem('totalCompleted') || '0');
+    const streak = parseInt(localStorage.getItem('streak') || '0');
 
-    if ([5, 10, 20, 50, 100].includes(streakCount)) {
+    document.getElementById('completed-count').textContent = completed;
+    document.getElementById('streak-count').textContent = streak;
+
+    // 🎉 Confetti if streak hits milestone
+    const milestones = [5, 10, 20, 50, 100];
+    if (milestones.includes(streak)) {
       confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
     }
 
-    // 🌙 Dark Mode
-    const darkBtn = document.getElementById("toggle-dark-mode");
-    const icon = document.getElementById("toggle-icon");
-
-    darkBtn.addEventListener("click", () => {
-      const isDark = document.body.classList.toggle("dark-mode");
-      localStorage.setItem("summaryDarkMode", isDark ? "on" : "off");
-      icon.textContent = isDark ? "☀️" : "🌙";
+    // 🌙 Dark Mode toggle with icon
+    const toggleBtn = document.getElementById("toggle-dark-mode");
+    toggleBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+      toggleBtn.textContent = document.body.classList.contains("dark-mode") ? "☀️" : "🌙";
+      localStorage.setItem("summaryDarkMode", document.body.classList.contains("dark-mode") ? "on" : "off");
     });
 
     window.addEventListener("DOMContentLoaded", () => {
       if (localStorage.getItem("summaryDarkMode") === "on") {
         document.body.classList.add("dark-mode");
-        icon.textContent = "☀️";
+        toggleBtn.textContent = "☀️";
       }
     });
 
-    // 📊 Chart
-    const ctx = document.getElementById("taskChart").getContext("2d");
-    const data = JSON.parse(localStorage.getItem("taskHistory") || '{}');
-    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const values = days.map(day => data[day] || 0);
+    // 📊 Weekly Progress Chart
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const progressData = JSON.parse(localStorage.getItem("weeklyProgress") || '{}');
 
-    new Chart(ctx, {
+    const today = new Date();
+    const labels = [];
+    const data = [];
+
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      const label = days[d.getDay()];
+      const key = d.toDateString();
+      labels.push(label);
+      data.push(progressData[key] || 0);
+    }
+
+    new Chart(document.getElementById('progressChart'), {
       type: 'bar',
       data: {
-        labels: days,
+        labels,
         datasets: [{
-          label: "Tasks This Week",
-          data: values,
-          backgroundColor: "#ff69b4"
+          label: 'Tasks Completed',
+          data,
+          backgroundColor: '#ffb6c1',
+          borderRadius: 5
         }]
       },
       options: {
         responsive: true,
+        plugins: {
+          legend: { display: false }
+        },
         scales: {
-          y: { beginAtZero: true }
+          y: {
+            beginAtZero: true,
+            ticks: { stepSize: 1 }
+          }
         }
       }
     });
+    
+  const goal = 5; // Change this value if you want to increase the daily goal
+  const radius = 54;
+  const circumference = 2 * Math.PI * radius;
+
+  document.getElementById('daily-goal').innerText = goal;
+
+  function getTodayTaskCount() {
+    const today = new Date().toDateString();
+    const progress = JSON.parse(localStorage.getItem('weeklyProgress') || '{}');
+    return progress[today] || 0;
+  }
+
+  function updateRing() {
+  const completed = getTodayTaskCount();
+  const percent = Math.min((completed / goal) * 100, 100);
+
+  const ring = document.querySelector('.progress-ring-fill');
+  const offset = circumference - (percent / 100) * circumference;
+
+  ring.style.strokeDashoffset = offset;
+  document.getElementById('goal-percent').textContent = `${Math.round(percent)}%`;
+  document.getElementById('completed-today').textContent = completed;
+
+  // 🎊 Confetti on 100%
+  if (percent === 100 && !localStorage.getItem("confettiShown")) {
+    confetti({
+      particleCount: 150,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+    localStorage.setItem("confettiShown", "yes");
+  }
+}
+
+const lastStreakDate = localStorage.getItem('lastStreakDate');
+if (lastStreakDate !== new Date().toDateString()) {
+  localStorage.removeItem("confettiShown");
+}
+
+  document.addEventListener('DOMContentLoaded', updateRing);
+
+function updateBadge() {
+  const streak = parseInt(localStorage.getItem("streak") || "0");
+  const badgeEl = document.getElementById("badge");
+
+  let badge = "";
+  if (streak >= 50) badge = "🔥 Streak Master!";
+  else if (streak >= 30) badge = "🏆 Goal Crusher";
+  else if (streak >= 10) badge = "🌟 Consistency Star";
+  else if (streak >= 5) badge = "💪 Keep It Up!";
+  else if (streak > 0) badge = "✨ Off to a Good Start!";
+
+  if (badge) {
+    badgeEl.innerHTML = `<span>${badge}</span>`;
+  } else {
+    badgeEl.innerHTML = "";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  updateRing();
+  updateBadge();
+});
+
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 </body>
 </html>
