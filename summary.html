@@ -3,169 +3,190 @@
 <head>
   <meta charset="UTF-8" />
   <title>Summary</title>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- NEW -->
 
   <style>
-  :root {
-    --bg-light: #fdf0f5;
-    --bg-box-light: #fff0f5;
-    --text-light: #333;
-    --bg-dark: #1e1e1e;
-    --bg-box-dark: #2c2c2c;
-    --text-dark: #f0f0f0;
-    --accent: #ff69b4;
-    --button-bg: #ffb6c1;
-  }
+    :root {
+      --bg-light: #fdf0f5;
+      --bg-box-light: #fff0f5;
+      --text-light: #333;
+      --bg-dark: #1e1e1e;
+      --bg-box-dark: #2c2c2c;
+      --text-dark: #f0f0f0;
+      --accent: #ff69b4;
+      --button-bg: #ffb6c1;
+    }
 
-  body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: var(--bg-light);
-    color: var(--text-light);
-    text-align: center;
-    padding: 2rem;
-    transition: background-color 0.3s, color 0.3s;
-    margin: 0;
-  }
-
-  body.dark-mode {
-    background-color: var(--bg-dark);
-    color: var(--text-dark);
-  }
-
-  h1 {
-    color: var(--accent);
-    font-size: 2rem;
-    margin: 1rem 0;
-  }
-
-  .summary-box {
-    background: var(--bg-box-light);
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin: 2rem auto;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
-    transition: background-color 0.3s;
-  }
-
-  body.dark-mode .summary-box {
-    background: var(--bg-box-dark);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
-  }
-
-  button {
-    margin-top: 1.5rem;
-    padding: 0.6rem 1.4rem;
-    background-color: var(--button-bg);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.2s, color 0.2s;
-  }
-
-  button:hover {
-    background-color: var(--accent);
-    color: white;
-  }
-
-  #calendar {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 90%;
-    margin: 2rem auto;
-    gap: 0.5rem;
-  }
-
-  .day-box {
-    width: 2rem;
-    height: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9rem;
-    border-radius: 6px;
-    background-color: #f5f5f5;
-    color: #666;
-    transition: background-color 0.3s, color 0.3s;
-  }
-
-  .day-box.completed {
-    background-color: #b5e6b5;
-    color: #2f6627;
-  }
-
-  .day-box.missed {
-    background-color: #f9c2c2;
-    color: #8b0000;
-  }
-
-  body.dark-mode .day-box {
-    background-color: #333;
-    color: #aaa;
-  }
-
-  body.dark-mode .day-box.completed {
-    background-color: #4caf50;
-    color: white;
-  }
-
-  body.dark-mode .day-box.missed {
-    background-color: #cc4444;
-    color: white;
-  }
-
-  #toggle-dark-mode {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    z-index: 1000;
-  }
-
-  /* ✅ Responsive tweaks */
-  @media (max-width: 600px) {
     body {
-      padding: 1rem;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      text-align: center;
+      padding: 2rem;
+      transition: background-color 0.3s, color 0.3s;
+      margin: 0;
+    }
+
+    body.dark-mode {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
     }
 
     h1 {
-      font-size: 1.5rem;
+      color: var(--accent);
+      font-size: 2rem;
+      margin: 1rem 0;
     }
 
     .summary-box {
-      padding: 1rem;
+      background: var(--bg-box-light);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem auto;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+      transition: background-color 0.3s;
+    }
+
+    body.dark-mode .summary-box {
+      background: var(--bg-box-dark);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
     }
 
     button {
-      width: 100%;
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.4rem;
+      background-color: var(--button-bg);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
       font-size: 1rem;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    button:hover {
+      background-color: var(--accent);
+      color: white;
     }
 
     #calendar {
-      max-width: 100%;
-      gap: 0.4rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 90%;
+      margin: 2rem auto;
+      gap: 0.5rem;
     }
 
     .day-box {
-      width: 2.2rem;
-      height: 2.2rem;
-      font-size: 0.8rem;
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      background-color: #f5f5f5;
+      color: #666;
+      transition: background-color 0.3s, color 0.3s;
     }
-  }
-</style>
 
+    .day-box.completed {
+      background-color: #b5e6b5;
+      color: #2f6627;
+    }
+
+    .day-box.missed {
+      background-color: #f9c2c2;
+      color: #8b0000;
+    }
+
+    body.dark-mode .day-box {
+      background-color: #333;
+      color: #aaa;
+    }
+
+    body.dark-mode .day-box.completed {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    body.dark-mode .day-box.missed {
+      background-color: #cc4444;
+      color: white;
+    }
+
+    #toggle-dark-mode {
+      #toggle-dark-mode {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+    }
+
+    #progress-chart-container {
+      max-width: 90%;
+      margin: 2rem auto;
+    }
+
+    canvas {
+      max-width: 100%;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .summary-box {
+        padding: 1rem;
+      }
+
+      button {
+        width: 100%;
+        font-size: 1rem;
+      }
+
+      #calendar {
+        max-width: 100%;
+        gap: 0.4rem;
+      }
+
+      .day-box {
+        width: 2.2rem;
+        height: 2.2rem;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <button id="toggle-dark-mode">Toggle Dark Mode</button>
+
+  <button id="toggle-dark-mode">🌙</button>
+
   <h1>🎉 Summary</h1>
 
   <div class="summary-box">
     <p><strong>Tasks Completed:</strong> <span id="completed-count">0</span></p>
     <p><strong>Streak:</strong> <span id="streak-count">0</span> days</p>
+  </div>
+
+  <!-- 🆕 Progress Chart -->
+  <div id="progress-chart-container">
+    <canvas id="progressChart"></canvas>
   </div>
 
   <div id="calendar"></div>
@@ -174,39 +195,88 @@
     <button>🔙 Go Back to To-Do</button>
   </a>
 
-  <script type="module" src="summary.js"></script>
   <script>
-  document.getElementById('completed-count').textContent =
-    localStorage.getItem('totalCompleted') || '0';
-  const streakCount = parseInt(localStorage.getItem('streak') || '0');
-  document.getElementById('streak-count').textContent = streakCount;
+    document.getElementById('completed-count').textContent =
+      localStorage.getItem('totalCompleted') || '0';
+    const streakCount = parseInt(localStorage.getItem('streak') || '0');
+    document.getElementById('streak-count').textContent = streakCount;
 
-  // 🎉 Confetti if streak hits milestone
-  const milestones = [5, 10, 20, 50, 100];
-  if (milestones.includes(streakCount)) {
-    confetti({
-      particleCount: 150,
-      spread: 70,
-      origin: { y: 0.6 }
-    });
+    // 🎉 Confetti if streak hits milestone
+    const milestones = [5, 10, 20, 50, 100];
+    if (milestones.includes(streakCount)) {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    }
+
+    // 🌙 Dark Mode toggle
+
+  const toggleBtn = document.getElementById("toggle-dark-mode");
+
+  function updateToggleIcon(isDark) {
+    toggleBtn.textContent = isDark ? "☀️" : "🌙";
   }
 
-  // 🌙 Dark Mode toggle
-  const toggleBtn = document.getElementById("toggle-dark-mode");
+  // Initial load
+  const savedMode = localStorage.getItem("summaryDarkMode");
+  if (savedMode === "on") {
+    document.body.classList.add("dark-mode");
+    updateToggleIcon(true);
+  } else {
+    updateToggleIcon(false);
+  }
+
   toggleBtn.addEventListener("click", () => {
-    document.body.classList.toggle("dark-mode");
-    localStorage.setItem(
-      "summaryDarkMode",
-      document.body.classList.contains("dark-mode") ? "on" : "off"
-    );
+    const isDark = document.body.classList.toggle("dark-mode");
+    localStorage.setItem("summaryDarkMode", isDark ? "on" : "off");
+    updateToggleIcon(isDark);
   });
 
-  window.addEventListener("DOMContentLoaded", () => {
-    if (localStorage.getItem("summaryDarkMode") === "on") {
-      document.body.classList.add("dark-mode");
-    }
-  });
-</script>
+
+
+    window.addEventListener("DOMContentLoaded", () => {
+      if (localStorage.getItem("summaryDarkMode") === "on") {
+        document.body.classList.add("dark-mode");
+      }
+
+      // 🆕 Progress Chart Logic
+      const ctx = document.getElementById('progressChart').getContext('2d');
+
+      // Example dummy data for 7 days – you can link to real data if needed
+      const dailyCompletions = JSON.parse(localStorage.getItem("taskHistory")) || [2, 3, 4, 1, 5, 0, 6];
+      const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Tasks Completed',
+            data: dailyCompletions,
+            borderColor: '#ff69b4',
+            backgroundColor: 'rgba(255, 105, 180, 0.1)',
+            fill: true,
+            tension: 0.4,
+            pointRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { stepSize: 1 }
+            }
+          }
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>
