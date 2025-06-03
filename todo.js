@@ -42,6 +42,7 @@ function toggleTask(index) {
     const completedCount = parseInt(localStorage.getItem('totalCompleted') || '0') + 1;
     localStorage.setItem('totalCompleted', completedCount);
     updateStreak();
+    updateTaskHistory();  // ✅ Update weekly progress
   }
 
   renderTasks();
@@ -65,6 +66,20 @@ function updateStreak() {
   }
 }
 
+function updateTaskHistory() {
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const today = days[new Date().getDay()];
+  let taskHistory = JSON.parse(localStorage.getItem('taskHistory') || '{}');
+
+  // Initialize if missing
+  days.forEach(day => {
+    if (!taskHistory[day]) taskHistory[day] = 0;
+  });
+
+  taskHistory[today]++;
+  localStorage.setItem('taskHistory', JSON.stringify(taskHistory));
+}
+
 document.getElementById('task-form').addEventListener('submit', (e) => {
   e.preventDefault();
   const taskInput = document.getElementById('task-input');
@@ -78,17 +93,19 @@ window.onload = function () {
   renderTasks();
 };
 
-// DARK MODE TOGGLE
+// 🌙 Dark Mode Toggle with Icon Swap
 const darkToggleBtn = document.getElementById('toggle-dark-mode');
+const toggleIcon = document.getElementById('toggle-icon');
 
 darkToggleBtn.addEventListener('click', () => {
-  document.body.classList.toggle('dark-mode');
-  localStorage.setItem('darkMode', document.body.classList.contains('dark-mode') ? 'on' : 'off');
+  const isDark = document.body.classList.toggle('dark-mode');
+  localStorage.setItem('darkMode', isDark ? 'on' : 'off');
+  toggleIcon.textContent = isDark ? '☀️' : '🌙';
 });
 
 window.addEventListener('DOMContentLoaded', () => {
   if (localStorage.getItem('darkMode') === 'on') {
     document.body.classList.add('dark-mode');
+    toggleIcon.textContent = '☀️';
   }
 });
-
