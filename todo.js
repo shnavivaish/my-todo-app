@@ -35,6 +35,20 @@ function renderTasks() {
     taskList.appendChild(li);
   });
 }
+// Personalized greeting
+window.addEventListener('DOMContentLoaded', () => {
+  const username = localStorage.getItem('username') || 'there';
+  const greeting = document.getElementById('greeting');
+  if (greeting) {
+    greeting.textContent = `Welcome back, ${username}! 👋`;
+  }
+
+  // Retain dark mode
+  if (localStorage.getItem("darkMode") === "on") {
+    document.body.classList.add("dark-mode");
+  }
+});
+
 
 // Toggle task completion
 function toggleTask(index) {

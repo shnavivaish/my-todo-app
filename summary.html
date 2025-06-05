@@ -219,7 +219,9 @@ body.dark-mode .badge-display span {
 <body>
 
   <button id="toggle-dark-mode" title="Toggle dark mode">🌙</button>
-  <h1>🎉 Summary</h1>
+  <!-- <h1>🎉 Summary</h1> -->
+<h1 id="summaryTitle">📊 Your Summary</h1>
+<h3 id="summaryGreeting"></h3>
 
   <div class="summary-box">
     <p><strong>Tasks Completed:</strong> <span id="completed-count">0</span></p>
@@ -379,6 +381,10 @@ document.addEventListener("DOMContentLoaded", () => {
   updateRing();
   updateBadge();
 });
+
+// Personalized Summary Greeting
+const userName = localStorage.getItem('userName') || 'friend';
+document.getElementById('summaryGreeting').textContent = `Great job, ${userName}! Keep up the amazing work! 💪`;
 
   </script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
