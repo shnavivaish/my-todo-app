@@ -95,6 +95,20 @@ h2 {
     body.dark-mode button:hover {
       background-color: #ff85c1;
     }
+
+.motivation-box {
+  margin: 20px auto;
+  padding: 16px 24px;
+  border-radius: 12px;
+  background: var(--bg-box-light);
+  color: var(--text-light);
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  max-width: 90%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+    
   </style>
 </head>
 <body>
@@ -104,6 +118,8 @@ h2 {
   <div style="text-align:right; margin-bottom: 1rem;">
     <button id="toggle-dark-mode">Toggle Dark Mode</button>
   </div>
+<div id="daily-motivation" class="motivation-box"></div>
+ 
 
   <form id="task-form">
     <input type="text" id="task-input" placeholder="Add a task..." />

@@ -112,11 +112,45 @@ document.getElementById('task-form').addEventListener('submit', (e) => {
     taskInput.value = '';
   }
 });
+function showDailyMotivation() {
+  const messages = [
+    "🌟 {name}, you’re doing amazing – keep it up!",
+    "🔥 {name}, small steps every day lead to big results.",
+    "💪 Believe in yourself, {name}, and all that you are.",
+    "✨ {name}, focus on progress, not perfection!",
+    "🚀 {name}, you’re one task closer to your goal!",
+    "🌈 Today is a fresh start. Let’s go, {name}!",
+    "🧠 One step at a time, one win at a time, {name}.",
+    "🌸 {name}, be proud of how far you’ve come!",
+    "☕ Deep breath, {name}. You got this!",
+    "🌞 Make today count – you’re worth it, {name}!"
+  ];
+
+  const userName = localStorage.getItem('userName') || 'Friend';
+  const today = new Date().toDateString();
+  let lastDate = localStorage.getItem('motivationDate');
+  let lastMessageIndex = parseInt(localStorage.getItem('motivationIndex') || '-1');
+
+  if (lastDate !== today) {
+    let newIndex;
+    do {
+      newIndex = Math.floor(Math.random() * messages.length);
+    } while (newIndex === lastMessageIndex);
+
+    localStorage.setItem('motivationIndex', newIndex);
+    localStorage.setItem('motivationDate', today);
+    lastMessageIndex = newIndex;
+  }
+
+  const personalizedMessage = messages[lastMessageIndex].replace(/{name}/g, userName);
+  document.getElementById('daily-motivation').textContent = personalizedMessage;
+}
 
 // Render tasks on load
 window.onload = function () {
   renderTasks();
 };
+showDailyMotivation();
 
 // 🌙 Dark Mode Toggle
 const darkToggleBtn = document.getElementById('toggle-dark-mode');
@@ -132,3 +166,24 @@ window.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add('dark-mode');
   }
 });
+// Apply saved theme on load
+const savedTheme = localStorage.getItem('selectedTheme') || 'pastel';
+document.body.classList.add(`theme-${savedTheme}`);
+
+
+// 🎨 Theme Handling
+const themeSelect = document.getElementById('themeSelect');
+
+if (themeSelect) {
+  // Set initial theme based on saved preference
+  const savedTheme = localStorage.getItem('selectedTheme') || 'pastel';
+  document.body.classList.add(`theme-${savedTheme}`);
+  themeSelect.value = savedTheme;
+
+  themeSelect.addEventListener('change', () => {
+    document.body.classList.remove(`theme-${savedTheme}`);
+    const newTheme = themeSelect.value;
+    document.body.classList.add(`theme-${newTheme}`);
+    localStorage.setItem('selectedTheme', newTheme);
+  });
+}

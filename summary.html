@@ -214,6 +214,30 @@ body.dark-mode .badge-display span {
   color: #ffb6c1;
 }
 
+body.theme-pastel {
+  --bg-light: #fdf0f5;
+  --bg-box-light: #fff0f5;
+  --text-light: #333;
+  --accent: #ff69b4;
+  --button-bg: #ffb6c1;
+}
+
+body.theme-sunset {
+  --bg-light: #fff5e6;
+  --bg-box-light: #ffe0b3;
+  --text-light: #4b2e2e;
+  --accent: #ff8c42;
+  --button-bg: #ffc078;
+}
+
+body.theme-ocean {
+  --bg-light: #e0f7fa;
+  --bg-box-light: #b2ebf2;
+  --text-light: #004d40;
+  --accent: #00bcd4;
+  --button-bg: #4dd0e1;
+}
+
   </style>
 </head>
 <body>
@@ -222,6 +246,13 @@ body.dark-mode .badge-display span {
   <!-- <h1>🎉 Summary</h1> -->
 <h1 id="summaryTitle">📊 Your Summary</h1>
 <h3 id="summaryGreeting"></h3>
+<label for="themeSelect">🎨 Theme:</label>
+<select id="themeSelect">
+  <option value="pastel">Pastel</option>
+  <option value="sunset">Sunset</option>
+  <option value="ocean">Ocean</option>
+</select>
+
 
   <div class="summary-box">
     <p><strong>Tasks Completed:</strong> <span id="completed-count">0</span></p>
@@ -382,9 +413,30 @@ document.addEventListener("DOMContentLoaded", () => {
   updateBadge();
 });
 
+// Apply saved theme on load
+const savedTheme = localStorage.getItem('selectedTheme') || 'pastel';
+document.body.classList.add(`theme-${savedTheme}`);
+
 // Personalized Summary Greeting
 const userName = localStorage.getItem('userName') || 'friend';
 document.getElementById('summaryGreeting').textContent = `Great job, ${userName}! Keep up the amazing work! 💪`;
+
+// 🎨 Theme Handling
+const themeSelect = document.getElementById('themeSelect');
+
+if (themeSelect) {
+  // Set initial theme based on saved preference
+  const savedTheme = localStorage.getItem('selectedTheme') || 'pastel';
+  document.body.classList.add(`theme-${savedTheme}`);
+  themeSelect.value = savedTheme;
+
+  themeSelect.addEventListener('change', () => {
+    document.body.classList.remove(`theme-${savedTheme}`);
+    const newTheme = themeSelect.value;
+    document.body.classList.add(`theme-${newTheme}`);
+    localStorage.setItem('selectedTheme', newTheme);
+  });
+}
 
   </script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
