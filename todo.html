@@ -122,8 +122,8 @@ body.dark-mode input[type="text"] {
     }
 
     #toggle-dark-mode {
-      float: top;
-      margin-bottom: 1rem;
+      float: right;
+      /* margin-bottom: 1rem; */
       margin-top: -1rem;
       background: transparent;
       border: none;
@@ -162,17 +162,106 @@ body.dark-mode input[type="text"] {
 .delete-btn:hover {
   transform: scale(1.2);
 }
+.quote-box {
+  background-color: #fff0f5;
+  border-radius: 12px;
+  padding: 0.5rem;
+  margin: 1rem auto;
+  max-width: 800px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  color: #444;
+  font-size: 1.2rem;
+  /* font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ; */
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+body.dark-mode .quote-box {
+  background-color: #2c2c2c;
+  color: #f0f0f0;
+}
+
+.mascot-quote-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  /* flex-wrap: wrap; */
+}
+
+.ai-mascot {
+  width: 50px;
+  height: 50px;
+  border-radius: 30%;
+  animation: float 2.5s ease-in-out infinite;
+}
+.mascot .eye {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: black;
+  border-radius: 50%;
+  top: 20px;
+  left: 16px;
+  animation: blink 4s infinite;
+}
+
+.mascot .eye.right {
+  left: 34px;
+}
+
+@keyframes blink {
+  0%, 97%, 100% {
+    transform: scaleY(1);
+  }
+  98%, 99% {
+    transform: scaleY(0.1);
+  }
+}
+
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* .quote-refresh {
+  margin-top: 1rem;
+  background-color: #ffb6c1;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.quote-refresh:hover {
+  background-color: #ff69b4;
+  color: white;
+} */
+
 
   </style>
 </head>
 <body>
-  <h1>🌸 My To-Do List</h1>
-  <h2 id="greeting"></h2>
-
   <div style="text-align:right; margin-bottom:1rem;">
     <button id="toggle-dark-mode">🌙</button>
   </div>
+  <h1>🌸 My To-Do List</h1>
+  <h2 id="greeting"></h2>
 
+  
+<div id="quote-box" class="quote-box">
+  <img id="ai-mascot" alt="AI Mascot" class="ai-mascot" />
+  <div>
+    <p id="ai-quote" class="quote-text">Loading motivational quote...</p>
+  </div>
+</div>
+
+
+  
   <form id="task-form">
     <input type="text" id="task-input" placeholder="Add a task..." autocomplete="off" />
     <button type="submit">Add</button>

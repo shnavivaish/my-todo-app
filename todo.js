@@ -16,6 +16,73 @@ function addTask(text, completed = false, priority = 'low', category = 'General'
   renderTasks();
 }
 
+const quotes = [
+  "You got this! Every small step counts 💪",
+  "Progress over perfection. Keep going! 🌟",
+  "Believe in yourself and all that you are ✨",
+  "One task at a time, one victory at a time 🏆",
+  "Consistency is the secret sauce! 🔑",
+  "Great things are done by a series of small things brought together 🎯",
+  "Stay focused, stay positive, and finish strong! 💖",
+  "Your dreams don’t work unless you do. Let’s get it! 🚀",
+  "Start now. You’re closer than you think. 🌈"
+];
+
+// Format date as yyyy-mm-dd
+function getTodayDateKey() {
+  const today = new Date();
+  return today.toISOString().split('T')[0];
+}
+
+// Get or set today's quote
+function getQuoteOfTheDay() {
+  const todayKey = getTodayDateKey();
+  const savedData = JSON.parse(localStorage.getItem('quoteOfTheDay') || '{}');
+
+  if (savedData.date === todayKey) {
+    return savedData.quote;
+  } else {
+    const newQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    localStorage.setItem('quoteOfTheDay', JSON.stringify({ date: todayKey, quote: newQuote }));
+    return newQuote;
+  }
+}
+
+function displayQuoteOfTheDay() {
+  document.getElementById('quote-text').textContent = getQuoteOfTheDay();
+}
+
+window.addEventListener('DOMContentLoaded', displayQuoteOfTheDay);
+
+
+  const mascotImages = [
+    "https://cdn-icons-png.flaticon.com/512/4712/4712104.png",  // robot
+    "https://cdn-icons-png.flaticon.com/512/4712/4712035.png",  // cat-bot
+    "https://cdn-icons-png.flaticon.com/512/4712/4712025.png",  // waving bot
+    "https://cdn-icons-png.flaticon.com/512/4712/4712055.png",  // book bot
+    "https://cdn-icons-png.flaticon.com/512/4712/4712007.png"   // smiling bot
+  ];
+
+  const randomMascot = mascotImages[Math.floor(Math.random() * mascotImages.length)];
+  document.getElementById("ai-mascot").src = randomMascot;
+
+
+  const userName = localStorage.getItem('userName') || "friend";
+
+  const personalizedQuotes = [
+    `Hey ${userName}, you're unstoppable today! 💪`,
+    `Keep shining, ${userName}! 🌟 You've got this.`,
+    `Let’s tackle a task together, ${userName}! 🧠`,
+    `${userName}, your goals are just a step away! 🚀`,
+    `One task at a time, ${userName}. You’re doing amazing! ✨`
+  ];
+
+  const quote = personalizedQuotes[Math.floor(Math.random() * personalizedQuotes.length)];
+  document.getElementById("ai-quote").textContent = quote;
+
+
+
+
 // Render tasks to the page
 function renderTasks() {
   const taskList = document.getElementById('task-list');
