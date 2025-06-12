@@ -5,11 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My To-Do List</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Segoe UI', sans-serif;
       background-color: #fff9f5;
       color: #333;
-      padding: 2rem;
+      padding: 1rem;
       max-width: 600px;
       margin: auto;
       transition: background-color 0.3s, color 0.3s;
@@ -23,33 +27,37 @@
     h1 {
       text-align: center;
       color: #ff69b4;
-    }
-h2 {
-      text-align: center;
-      color: #ff69b4;
+      font-size: 2rem;
     }
 
+    h2 {
+      text-align: center;
+      color: #ff69b4;
+      font-size: 1.25rem;
+    }
 
     form {
       display: flex;
-      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
       margin-bottom: 1rem;
     }
 
     input[type="text"] {
-      flex: 1;
-      padding: 0.5rem;
+      flex: 1 1 70%;
+      padding: 0.6rem;
       border-radius: 8px;
       border: 1px solid #ccc;
-      margin-right: 0.5rem;
+      font-size: 1rem;
     }
 
     button {
-      padding: 0.5rem 1rem;
+      padding: 0.6rem 1rem;
       background-color: #ffb6c1;
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      font-size: 1rem;
     }
 
     button:hover {
@@ -95,18 +103,47 @@ h2 {
     body.dark-mode button:hover {
       background-color: #ff85c1;
     }
+
+    #toggle-dark-mode {
+      float: top;
+      margin-bottom: 1rem;
+      margin-top: -1rem;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      
+    }
+
+    html, body {
+      overflow-x: hidden;
+      touch-action: manipulation;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1rem;
+      }
+
+      input[type="text"], button {
+        flex: 1 1 100%;
+      }
+    }
   </style>
 </head>
 <body>
   <h1>🌸 My To-Do List</h1>
-<h2 id="greeting"></h2>
+  <h2 id="greeting"></h2>
 
-  <div style="text-align:right; margin-bottom: 1rem;">
-    <button id="toggle-dark-mode">Toggle Dark Mode</button>
+  <div style="text-align:right; margin-bottom:1rem;">
+    <button id="toggle-dark-mode">🌙</button>
   </div>
 
   <form id="task-form">
-    <input type="text" id="task-input" placeholder="Add a task..." />
+    <input type="text" id="task-input" placeholder="Add a task..." autocomplete="off" />
     <button type="submit">Add</button>
   </form>
 

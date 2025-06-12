@@ -19,6 +19,8 @@ function addTask(text, completed = false, priority = 'low', category = 'General'
 // Render tasks to the page
 function renderTasks() {
   const taskList = document.getElementById('task-list');
+  if (!taskList) return; // Prevent crash if not found
+
   taskList.innerHTML = '';
 
   tasks.forEach((task, index) => {
@@ -35,20 +37,6 @@ function renderTasks() {
     taskList.appendChild(li);
   });
 }
-// Personalized greeting
-window.addEventListener('DOMContentLoaded', () => {
-  const username = localStorage.getItem('username') || 'there';
-  const greeting = document.getElementById('greeting');
-  if (greeting) {
-    greeting.textContent = `Welcome back, ${username}! 👋`;
-  }
-
-  // Retain dark mode
-  if (localStorage.getItem("darkMode") === "on") {
-    document.body.classList.add("dark-mode");
-  }
-});
-
 
 // Toggle task completion
 function toggleTask(index) {
@@ -58,9 +46,8 @@ function toggleTask(index) {
   if (tasks[index].completed) {
     const completedCount = parseInt(localStorage.getItem('totalCompleted') || '0') + 1;
     localStorage.setItem('totalCompleted', completedCount);
-
     updateStreak();
-    updateWeeklyProgress(); // ✅ Track completion for the progress chart
+    updateWeeklyProgress();
   }
 
   renderTasks();
@@ -86,14 +73,14 @@ function updateStreak() {
   }
 }
 
-// ✅ Update weekly progress data in localStorage
+// Update weekly progress
 function updateWeeklyProgress() {
   const todayKey = new Date().toDateString();
   const progress = JSON.parse(localStorage.getItem('weeklyProgress') || '{}');
 
   progress[todayKey] = (progress[todayKey] || 0) + 1;
 
-  // Keep only last 7 days
+  // Limit to last 7 days
   const keys = Object.keys(progress);
   if (keys.length > 7) {
     const sorted = keys.sort((a, b) => new Date(a) - new Date(b));
@@ -103,32 +90,50 @@ function updateWeeklyProgress() {
   localStorage.setItem('weeklyProgress', JSON.stringify(progress));
 }
 
-// Form submit handler
-document.getElementById('task-form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const taskInput = document.getElementById('task-input');
-  if (taskInput.value.trim() !== '') {
-    addTask(taskInput.value.trim());
-    taskInput.value = '';
-  }
-});
+// 🌙 Dark Mode toggle
+function setupDarkModeToggle() {
+  const darkToggleBtn = document.getElementById('toggle-dark-mode');
+  if (!darkToggleBtn) return;
 
-// Render tasks on load
-window.onload = function () {
-  renderTasks();
-};
+  darkToggleBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode') ? 'on' : 'off');
+    darkToggleBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+  });
 
-// 🌙 Dark Mode Toggle
-const darkToggleBtn = document.getElementById('toggle-dark-mode');
-
-darkToggleBtn.addEventListener('click', () => {
-  document.body.classList.toggle('dark-mode');
-  localStorage.setItem('darkMode', document.body.classList.contains('dark-mode') ? 'on' : 'off');
-});
-
-// Set dark mode if stored preference is on
-window.addEventListener('DOMContentLoaded', () => {
   if (localStorage.getItem('darkMode') === 'on') {
     document.body.classList.add('dark-mode');
+    darkToggleBtn.textContent = '☀️';
   }
+}
+
+// Personalized greeting + Event listeners
+window.addEventListener('DOMContentLoaded', () => {
+  // Greet user
+  const username = localStorage.getItem('username') || 'there';
+  const greeting = document.getElementById('greeting');
+  if (greeting) {
+    greeting.textContent = `Welcome back, ${username}! 👋`;
+  }
+
+  // Setup dark mode toggle
+  setupDarkModeToggle();
+
+  // Form submission
+  const taskForm = document.getElementById('task-form');
+  const taskInput = document.getElementById('task-input');
+
+  if (taskForm && taskInput) {
+    taskForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = taskInput.value.trim();
+      if (text !== '') {
+        addTask(text);
+        taskInput.value = '';
+      }
+    });
+  }
+
+  // Load tasks
+  renderTasks();
 });
