@@ -31,7 +31,7 @@ function renderTasks() {
     li.innerHTML = `
       <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${index})" />
       <span>${task.text}</span>
-      <button onclick="deleteTask(${index})" style="font-size: 1rem; background: none; border: none; cursor: pointer;">❌</button>
+      <button onclick="deleteTask(${index})" class="delete-btn">❌</button>
 
     `;
 
