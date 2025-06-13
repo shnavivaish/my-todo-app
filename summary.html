@@ -221,7 +221,7 @@ body.dark-mode .badge-display span {
   </style>
 </head>
 <body>
-<div id="overdue" class="overdue-warning" ></div>
+<div id="overdue" class="overdue-warning"></div>
 
   <button id="toggle-dark-mode" title="Toggle dark mode">🌙</button>
   <!-- <h1>🎉 Summary</h1> -->
@@ -365,23 +365,36 @@ if (lastStreakDate !== new Date().toDateString()) {
 
   document.addEventListener('DOMContentLoaded', updateRing);
 
-function deleteOverdueTasks() {
+  function showOverdueTasks() {
   const taskList = JSON.parse(localStorage.getItem("tasks") || "[]");
   const now = new Date();
 
-  const filteredTasks = taskList.filter(task => {
+  const overdue = taskList.filter(task => {
     const created = new Date(task.timestamp);
-    // Keep only tasks that are either completed or not yet overdue
-    return task.completed || (now - created <= 24 * 60 * 60 * 1000);
+    return !task.completed && (now - created) > 24 * 60 * 60 * 1000;
   });
 
-  const deletedCount = taskList.length - filteredTasks.length;
+  const overdueContainer = document.getElementById('overdue');
+  overdueContainer.innerHTML = '';
 
-  if (deletedCount > 0) {
-    localStorage.setItem("tasks", JSON.stringify(filteredTasks));
+  if (overdue.length > 0) {
+    const warning = document.createElement('p');
+    warning.textContent = `⚠️ ${overdue.length} task(s) are overdue (not completed within 24 hours):`;
+    warning.style.color = 'red';
+    warning.style.fontWeight = 'bold';
+    overdueContainer.appendChild(warning);
 
-    const overdueContainer = document.getElementById('overdue');
-    overdueContainer.innerHTML = `<p style="color:red; font-weight:bold;">🗑️ ${deletedCount} overdue task(s) deleted automatically!</p>`;
+    const list = document.createElement('ul');
+    list.style.marginTop = '10px';
+
+    overdue.forEach(task => {
+      const item = document.createElement('li');
+      item.textContent = `• ${task.text}`;
+      item.style.color = '#ff4c4c';
+      list.appendChild(item);
+    });
+
+    overdueContainer.appendChild(list);
   }
 }
 
@@ -409,7 +422,7 @@ function updateBadge() {
 document.addEventListener("DOMContentLoaded", () => {
   updateRing();
   updateBadge();
- deleteOverdueTasks();
+  showOverdueTasks();
 });
 
 // Personalized Summary Greeting
