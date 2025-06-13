@@ -221,6 +221,7 @@ body.dark-mode .badge-display span {
   </style>
 </head>
 <body>
+<div id="overdue" class="overdue-warning" ></div>
 
   <button id="toggle-dark-mode" title="Toggle dark mode">🌙</button>
   <!-- <h1>🎉 Summary</h1> -->
@@ -231,6 +232,7 @@ body.dark-mode .badge-display span {
     <p><strong>Tasks Completed:</strong> <span id="completed-count">0</span></p>
     <p><strong>Streak:</strong> <span id="streak-count">0</span> days</p>
   </div>
+  
 <div id="badge" class="badge-display"></div>
 
   <canvas id="progressChart" width="300" height="200"></canvas>
@@ -322,7 +324,7 @@ body.dark-mode .badge-display span {
       }
     });
     
-  const goal = 5; // Change this value if you want to increase the daily goal
+  const goal = 10; // Change this value if you want to increase the daily goal
   const radius = 54;
   const circumference = 2 * Math.PI * radius;
 
@@ -363,15 +365,38 @@ if (lastStreakDate !== new Date().toDateString()) {
 
   document.addEventListener('DOMContentLoaded', updateRing);
 
+function deleteOverdueTasks() {
+  const taskList = JSON.parse(localStorage.getItem("tasks") || "[]");
+  const now = new Date();
+
+  const filteredTasks = taskList.filter(task => {
+    const created = new Date(task.timestamp);
+    // Keep only tasks that are either completed or not yet overdue
+    return task.completed || (now - created <= 24 * 60 * 60 * 1000);
+  });
+
+  const deletedCount = taskList.length - filteredTasks.length;
+
+  if (deletedCount > 0) {
+    localStorage.setItem("tasks", JSON.stringify(filteredTasks));
+
+    const overdueContainer = document.getElementById('overdue');
+    overdueContainer.innerHTML = `<p style="color:red; font-weight:bold;">🗑️ ${deletedCount} overdue task(s) deleted automatically!</p>`;
+  }
+}
+
+
+
 function updateBadge() {
   const streak = parseInt(localStorage.getItem("streak") || "0");
   const badgeEl = document.getElementById("badge");
 
   let badge = "";
-  if (streak >= 50) badge = "🔥 Streak Master!";
-  else if (streak >= 30) badge = "🏆 Goal Crusher";
+  if (streak >= 100) badge = "🔥legendaryy performance😁";
+  else if (streak >= 50) badge = "Chumeshwari Performance✨😁";
+  else if (streak >= 30) badge = "🏆 Manjil ke paas";
   else if (streak >= 10) badge = "🌟 Consistency Star";
-  else if (streak >= 5) badge = "💪 Keep It Up!";
+  else if (streak >= 5) badge = "💪 Keep It Up, Master🔥";
   else if (streak > 0) badge = "✨ Off to a Good Start!";
 
   if (badge) {
@@ -384,6 +409,7 @@ function updateBadge() {
 document.addEventListener("DOMContentLoaded", () => {
   updateRing();
   updateBadge();
+ deleteOverdueTasks();
 });
 
 // Personalized Summary Greeting
